@@ -48,6 +48,7 @@ class RegisterParticipantUseCase @Inject constructor(
         participantId = participantId,
         nin = nin,
         gender = gender,
+        isBirthDateEstimated = isBirthDateEstimated,
         birthDate = birthDate,
         attributes = attributes,
         address = address,

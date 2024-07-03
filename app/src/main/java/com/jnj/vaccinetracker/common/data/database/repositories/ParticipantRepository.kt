@@ -40,15 +40,14 @@ class ParticipantRepository @Inject constructor(
         participantId = participantId,
         nin = nin,
         gender = gender,
+        isBirthDateEstimated = isBirthDateEstimated,
         birthDate = birthDate,
         address = address?.toDomain(),
         dateModified = dateModified,
         attributes = attributes.toMap()
             .withPhone(phone)
             .withLocationUuid(locationUuid)
-            .withBirthWeight(birthWeight)
-            .withIsBirthDateEstimated(isBirthDateEstimated),
-            // todo add the map here
+            .withBirthWeight(birthWeight),
         biometricsTemplate = templateFile,
         image = imageFile
     )

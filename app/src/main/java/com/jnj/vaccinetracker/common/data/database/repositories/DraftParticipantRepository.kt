@@ -41,15 +41,14 @@ class DraftParticipantRepository @Inject constructor(
         participantId = participantId,
         nin = nin,
         gender = gender,
+        isBirthDateEstimated = isBirthDateEstimated,
         birthDate = birthDate,
         address = address?.toDomain(),
         registrationDate = registrationDate,
         attributes = attributes.toMap()
             .withPhone(phone)
             .withLocationUuid(locationUuid)
-            .withBirthWeight(birthWeight)
-            .withIsBirthDateEstimated(isBirthDateEstimated),
-            // TODO add the map of birthweight here
+            .withBirthWeight(birthWeight),
         draftState = draftState
     )
 
