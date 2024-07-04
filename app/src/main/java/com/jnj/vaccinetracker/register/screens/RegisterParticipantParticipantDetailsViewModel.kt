@@ -202,7 +202,6 @@ class RegisterParticipantParticipantDetailsViewModel @Inject constructor(
         vaccineNames.set(configuration.vaccines.map { vaccine ->
             DisplayValue(vaccine.name, loc[vaccine.name])
         })
-        // loc up keys
         val categories = listOf("National", "Foreigner", "Refugee")
         val childCategoryDisplayValue = categories.map { categories ->
             DisplayValue(categories, loc[categories])
@@ -234,7 +233,6 @@ class RegisterParticipantParticipantDetailsViewModel @Inject constructor(
         val nin = nin.get()
         logInfo("setting up birthweight")
         val birthWeight = birthWeight.get()
-        logInfo("setting up birthweight")
         val gender = gender.get()
         val birthDate = birthDate.get()
         val isBirthDateEstimated = isBirthDateEstimated.get()
@@ -344,10 +342,7 @@ class RegisterParticipantParticipantDetailsViewModel @Inject constructor(
             genderValidationMessage.set(resourcesWrapper.getString(R.string.participant_registration_details_error_no_gender))
         }
 
-        logInfo("Checking birthweight.....................")
-
         if (birthWeight == null ){
-            logInfo("Checking birthweight being saved")
             isValid = false
             birthWeightValidationMessage.set("Please enter birth weight as integer")
         }
