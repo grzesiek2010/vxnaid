@@ -25,6 +25,7 @@ sealed class ParticipantSyncRecord : SyncRecordBase {
         val participantId: String,
         val nin: String?,
         val gender: Gender,
+        val isBirthDateEstimated: Boolean?,
         val birthDate: BirthDateDto,
         val attributes: List<AttributeDto>,
         @Json(name = "addresses")

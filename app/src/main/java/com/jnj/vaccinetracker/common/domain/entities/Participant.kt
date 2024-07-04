@@ -12,6 +12,7 @@ sealed class ParticipantBase {
     abstract val biometricsTemplate: ParticipantBiometricsTemplateFileBase?
     abstract val participantId: String
     abstract val gender: Gender
+    abstract val isBirthDateEstimated: Boolean?
     abstract val birthDate: BirthDate
     abstract val attributes: Map<String, String>
     abstract val address: Address?
@@ -20,7 +21,6 @@ sealed class ParticipantBase {
     val locationUuid: String? get() = attributes[Constants.ATTRIBUTE_LOCATION]
     val originalParticipantId: String? get() = attributes[Constants.ATTRIBUTE_ORIGINAL_PARTICIPANT_ID]
     val regimen: String? get() = attributes[Constants.ATTRIBUTE_VACCINE]
-    val isBirthDateEstimated: Boolean? get() = attributes[Constants.ATTRIBUTE_IS_BIRTH_DATE_ESTIMATED]?.toBoolean()
     val birthWeight: String? get() = attributes[Constants.ATTRIBUTE_BIRTH_WEIGHT]
 }
 
@@ -32,6 +32,7 @@ data class Participant(
     override val participantId: String,
     override val nin: String?,
     override val gender: Gender,
+    override val isBirthDateEstimated: Boolean?,
     override val birthDate: BirthDate,
     override val attributes: Map<String, String>,
     override val address: Address?,
@@ -47,6 +48,7 @@ data class DraftParticipant(
     override val participantId: String,
     override val nin: String?,
     override val gender: Gender,
+    override val isBirthDateEstimated: Boolean?,
     override val birthDate: BirthDate,
     override val attributes: Map<String, String>,
     override val address: Address?,
@@ -70,15 +72,6 @@ fun Map<String, String>.withLocationUuid(locationUuid: String?): Map<String, Str
     return locationUuid?.let { this + mapOf(locationKey to it) } ?: filterKeys { it != locationKey }
 }
 
-fun Map<String, String>.withIsBirthDateEstimated(isBirthDateEstimated: Boolean?): Map<String, String> {
-    val birthdayEstimatedKey = Constants.ATTRIBUTE_IS_BIRTH_DATE_ESTIMATED
-    return if (isBirthDateEstimated != null) {
-        this + mapOf(birthdayEstimatedKey to isBirthDateEstimated.toString())
-    } else {
-        filterKeys { it != birthdayEstimatedKey }
-    }
-}
-
 fun Map<String, String>.withBirthWeight(birthWeight: String?): Map<String,String> {
     val birthWeightKey = Constants.ATTRIBUTE_BIRTH_WEIGHT
     return birthWeight?.let { this + mapOf(birthWeightKey to it) } ?: filterKeys { it != birthWeightKey}
@@ -92,6 +85,7 @@ fun DraftParticipant.toParticipantWithoutAssets(): Participant = Participant(
     participantId = participantId,
     nin = nin,
     gender = gender,
+    isBirthDateEstimated = isBirthDateEstimated,
     birthDate = birthDate,
     attributes = attributes,
     address = address

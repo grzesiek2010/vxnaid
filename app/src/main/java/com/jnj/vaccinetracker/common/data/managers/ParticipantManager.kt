@@ -92,8 +92,6 @@ class ParticipantManager @Inject constructor(
             Constants.ATTRIBUTE_LOCATION to siteUuid,
             Constants.ATTRIBUTE_LANGUAGE to language,
             Constants.ATTRIBUTE_OPERATOR to operatorUUid,
-            Constants.ATTRIBUTE_IS_BIRTH_DATE_ESTIMATED to isBirthDateEstimated.toString(),
-            // add birth weight to the list off attributes
         )
         if (telephone != null) {
             personAttributes[Constants.ATTRIBUTE_TELEPHONE] = telephone
@@ -105,6 +103,7 @@ class ParticipantManager @Inject constructor(
             participantId = participantId,
             nin = nin,
             gender = gender,
+            isBirthDateEstimated = isBirthDateEstimated,
             birthDate = BirthDate(birthDate.unixMillisLong),
             address = address,
             attributes = personAttributes,

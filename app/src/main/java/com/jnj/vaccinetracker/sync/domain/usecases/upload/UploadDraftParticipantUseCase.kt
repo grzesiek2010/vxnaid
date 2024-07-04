@@ -85,6 +85,7 @@ class UploadDraftParticipantUseCase @Inject constructor(
         participantId = participantId,
         nin = nin,
         gender = gender,
+        isBirthDateEstimated = isBirthDateEstimated,
         birthdate = birthDate.toDto(),
         addresses = listOfNotNull(address?.toDto()),
         attributes = attributes.map { AttributeDto(it.key, it.value) },

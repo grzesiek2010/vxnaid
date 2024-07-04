@@ -47,6 +47,7 @@ class StoreParticipantSyncRecordUseCase @Inject constructor(
         participantId = participantId,
         nin = nin,
         gender = gender,
+        isBirthDateEstimated = isBirthDateEstimated,
         birthDate = birthDate.toDomain(),
         attributes = attributes.toMap(),
         address = address,
