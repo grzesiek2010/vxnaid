@@ -102,18 +102,16 @@ class DraftParticipantScript {
             val draftParticipant = participantManager.registerParticipant(
                 participantId = participantId,
                 nin = "NIN$participantId",
+                "3",
                 gender = gender,
                 birthDate = birthDate,
                 isBirthDateEstimated = isBirthDateEstimated,
                 telephone = telephone,
                 siteUuid = siteUuid,
                 language = lang,
-                vaccine = vaccine,
-                birthWeight = birthWeight,
                 address = address,
                 picture = image,
-                biometricsTemplateBytes = template,
-                birthWeight = birthWeight
+                biometricsTemplateBytes = template
             )
             println("logging first visit for participant $participantId")
             val participantUuid = draftParticipant.participantUuid
@@ -133,7 +131,9 @@ class DraftParticipantScript {
                 vialCode = vialCode,
                 dosingNumber = firstScheduledDosingVisit.dosingNumber!!,
                 weight = weight,
-                height = height
+                height = height,
+                isOedema = false,
+                muac = 5
             )
         }
     }

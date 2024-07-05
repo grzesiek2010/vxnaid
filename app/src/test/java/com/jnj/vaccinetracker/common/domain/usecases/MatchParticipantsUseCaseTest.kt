@@ -56,17 +56,16 @@ class MatchParticipantsUseCaseTest : FunSpec({
 
     fun ParticipantBiometricsTemplateFileBase.toMatch(matchingScore: Int) = BiometricsFileMatch(this, matchingScore)
     fun participantMatch(uuid: String = uuid(), participantId: String, matchingScore: Int? = null): ParticipantMatch {
-        return ParticipantMatch(uuid, participantId, matchingScore, BirthDate.yearOfBirth(2000), null, emptyMap())
+        return ParticipantMatch(uuid, participantId, matchingScore, Gender.MALE, BirthDate.yearOfBirth(2000), null, emptyMap())
     }
 
     fun participantMatchDto(uuid: String = uuid(), participantId: String, matchingScore: Int? = null): ParticipantMatchDto {
-        return ParticipantMatchDto(uuid, participantId, matchingScore, BirthDate.yearOfBirth(2000).toDto(), null, emptyList())
+        return ParticipantMatchDto(uuid, participantId, matchingScore, Gender.FEMALE, BirthDate.yearOfBirth(2000).toDto(), null, emptyList())
     }
 
     fun participant(uuid: String = uuid(), participantId: String = "", nin: String = "", phone: String? = null, gender: Gender = Gender.MALE, withTemplate: Boolean = true) =
-        Participant(uuid, DateEntity(), null, if (withTemplate) ParticipantBiometricsTemplateFile.newFile(uuid) else null, participantId, nin, gender, BirthDate.yearOfBirth(2000),
-            mapOf<String,String>() .withBirthWeight(birthWeight) null)
-            mapOf<String, String>().withPhone(phone), null)
+        Participant(uuid, DateEntity(), null, if (withTemplate) ParticipantBiometricsTemplateFile.newFile(uuid) else null, participantId, nin, gender, false,
+            BirthDate.yearOfBirth(2000), mapOf<String,String>().withBirthWeight("3"), null)
 
     fun draftParticipant(uuid: String = uuid(), participantId: String = "", nin: String = "", phone: String? = null, gender: Gender = Gender.FEMALE, withTemplate: Boolean = true) =
         DraftParticipant(
@@ -77,12 +76,11 @@ class MatchParticipantsUseCaseTest : FunSpec({
             participantId,
             nin,
             gender,
+            false,
             BirthDate.yearOfBirth(2000),
             mapOf<String, String>().withPhone(phone),
-            mapOf<String, String>().withBirthWeight(birthWeight)
             null,
-            DraftState.initialState(),
-            birthWeight
+            DraftState.initialState()
         )
     test("when remote api successfully returns result then return that") {
         // Arrange

@@ -65,7 +65,8 @@ class RegisterParticipantUseCaseTest : FunSpec({
         participantId = participantUuid,
         nin = participantUuid,
         gender = Gender.MALE,
-        birthdate = BirthDate.yearOfBirth(1994),
+        isBirthDateEstimated = false,
+        birthDate = BirthDate.yearOfBirth(1994),
         address = Address(
             address1 = "Koekoekstraat",
             address2 = "40",
@@ -87,11 +88,11 @@ class RegisterParticipantUseCaseTest : FunSpec({
         participantId = registerParticipant.participantId,
         nin = "NIN$registerParticipant.participantId",
         gender = registerParticipant.gender,
-        birthDate = registerParticipant.birthdate,
+        isBirthDateEstimated = false,
+        birthDate = registerParticipant.birthDate,
         attributes = registerParticipant.attributes,
         address = registerParticipant.address,
-        draftState = DraftState.UPLOADED,
-        birthWeight = birthWeight
+        draftState = DraftState.UPLOADED
     )
 
     val uploadedDraftParticipantTemplatesUploaded = DraftParticipant(
@@ -102,11 +103,11 @@ class RegisterParticipantUseCaseTest : FunSpec({
         participantId = registerParticipant.participantId,
         nin = "NIN$registerParticipant.participantId",
         gender = registerParticipant.gender,
-        birthDate = registerParticipant.birthdate,
+        isBirthDateEstimated = false,
+        birthDate = registerParticipant.birthDate,
         attributes = registerParticipant.attributes,
         address = registerParticipant.address,
-        draftState = DraftState.UPLOADED,
-        birthWeight = birthWeight
+        draftState = DraftState.UPLOADED
     )
 
     val draftVisit = DraftVisit(
