@@ -1,5 +1,6 @@
 package com.jnj.vaccinetracker.common.data.managers
 
+import android.hardware.SensorPrivacyManager
 import com.jnj.vaccinetracker.common.data.helpers.SystemLanguageProvider
 import com.jnj.vaccinetracker.common.domain.entities.AddressHierarchy
 import com.jnj.vaccinetracker.common.domain.entities.AddressValue
@@ -8,6 +9,7 @@ import com.jnj.vaccinetracker.common.domain.entities.TranslationMap
 import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetAddressHierarchyUseCase
 import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetConfigurationUseCase
 import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetLocalizationMapUseCase
+import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetNinIdentifiersListUseCase
 import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetSitesUseCase
 import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetSubstancesConfigUseCase
 import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetSubstancesGroupConfigUseCase
@@ -29,7 +31,8 @@ class ConfigurationManager @Inject constructor(
     private val getAddressHierarchyUseCase: GetAddressHierarchyUseCase,
     private val systemLanguageProvider: SystemLanguageProvider,
     private val getSubstancesConfigUseCase: GetSubstancesConfigUseCase,
-    private val getSubstancesGroupConfigUseCase: GetSubstancesGroupConfigUseCase
+    private val getSubstancesGroupConfigUseCase: GetSubstancesGroupConfigUseCase,
+    private val getNinIdentifiersListUseCase: GetNinIdentifiersListUseCase
 ) {
 
     suspend fun getConfiguration() = getConfigurationUseCase.getMasterData()
@@ -65,4 +68,6 @@ class ConfigurationManager @Inject constructor(
     suspend fun getSubstancesConfig() = getSubstancesConfigUseCase.getMasterData()
 
     suspend fun getSubstancesGroupConfig() = getSubstancesGroupConfigUseCase.getMasterData()
+
+    suspend fun getNinIdentifiers() = getNinIdentifiersListUseCase.getMasterData()
 }

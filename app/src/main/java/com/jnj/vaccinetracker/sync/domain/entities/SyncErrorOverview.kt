@@ -35,6 +35,7 @@ data class SyncErrorOverview(val metadata: SyncErrorMetadata, val dateCreated: D
         MasterDataFile.VACCINE_SCHEDULE -> R.string.vaccine_schedule
         MasterDataFile.SUBSTANCES_CONFIG -> R.string.substances_config
         MasterDataFile.SUBSTANCES_GROUP_CONFIG -> R.string.substances_group_config
+        MasterDataFile.NIN_IDENTIFIERS_LIST -> R.string.nin_identifiers_list
     }.let { context.getString(it) }
 
     private fun LicenseType.display(context: ResourcesWrapper) = when (this) {

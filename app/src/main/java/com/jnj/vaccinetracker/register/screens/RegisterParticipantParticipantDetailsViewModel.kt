@@ -238,7 +238,8 @@ class RegisterParticipantParticipantDetailsViewModel @Inject constructor(
         val isBirthDateEstimated = isBirthDateEstimated.get()
         val fullPhoneNumber = createFullPhone()
 
-        val isValidInput = validateInput(participantId, gender, birthDate, homeLocation)
+        val areInputsValid = validateInput(participantId, gender, birthDate, homeLocation)
+        val isNinValid = isNinValueValid(nin)
 
         var phoneNumberToSubmit: String? = null
 
@@ -251,7 +252,7 @@ class RegisterParticipantParticipantDetailsViewModel @Inject constructor(
         }
 
         // Validate the phone number input. If empty, it shows the dialog that it can be skipped.
-        if (isValidInput && phone.get().isNullOrEmpty() && !canSkipPhone) {
+        if (areInputsValid && phone.get().isNullOrEmpty() && !canSkipPhone) {
             registerNoPhoneEvents.tryEmit(Unit)
             return
         } else if (!phone.get().isNullOrEmpty() && !phoneValidator.validate(fullPhoneNumber)) {
@@ -260,7 +261,7 @@ class RegisterParticipantParticipantDetailsViewModel @Inject constructor(
         } else if (!phone.get().isNullOrEmpty()) {
             phoneNumberToSubmit = fullPhoneNumber
         }
-        if (!isValidInput)
+        if (!areInputsValid || !isNinValid)
             return
 
         loading.set(true)
@@ -315,7 +316,6 @@ class RegisterParticipantParticipantDetailsViewModel @Inject constructor(
                     registerFailedEvents.tryEmit(resourcesWrapper.getString(R.string.general_label_error))
                 }
             }
-
         }
     }
 
@@ -358,6 +358,24 @@ class RegisterParticipantParticipantDetailsViewModel @Inject constructor(
         }
 
         return isValid
+    }
+
+    private suspend fun isNinValueValid(ninValue: String?): Boolean {
+        var isValid = true
+        if (ninValue.isNullOrEmpty()) {
+            isValid = false
+            ninValidationMessage.set(resourcesWrapper.getString(R.string.participant_registration_details_error_no_nin))
+        } else if (isNinAlreadyExist(ninValue)) {
+            isValid = false
+            ninValidationMessage.set(resourcesWrapper.getString(R.string.participant_registration_details_error_nin_already_exist))
+        }
+
+        return isValid
+    }
+
+    private suspend fun isNinAlreadyExist(ninValue: String?): Boolean {
+        val ninIds = configurationManager.getNinIdentifiers().map { it.identifierValue }
+        return ninIds.any { it.equals(ninValue, ignoreCase = true) }
     }
 
     private fun resetValidationMessages() {

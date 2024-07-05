@@ -128,4 +128,7 @@ interface VaccineTrackerSyncApiService {
 
     @GET("$BIOMETRIC/health")
     suspend fun getHealth(): Response<*>
+
+    @GET("$BIOMETRIC/identifiers/{name}")
+    suspend fun getParticipantIdentifiers(@Path("name") identifierTypeName: String): List<IdentifierDTO>
 }
