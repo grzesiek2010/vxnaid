@@ -1,5 +1,6 @@
 package com.jnj.vaccinetracker.register.screens
 
+import android.util.Log
 import androidx.collection.ArrayMap
 import com.jnj.vaccinetracker.R
 import com.jnj.vaccinetracker.common.data.database.typealiases.yearNow
@@ -194,13 +195,21 @@ class RegisterParticipantParticipantDetailsViewModel @Inject constructor(
     }
 
     private fun onSiteAndConfigurationLoaded(site: Site, configuration: Configuration, loc: TranslationMap) {
+
         defaultPhoneCountryCode.set(site.countryCode)
         if (phoneCountryCode.get() == null) phoneCountryCode.set(site.countryCode)
 
-        vaccineNames.set(configuration.vaccines.map { vaccine -> vaccine.name }.map { DisplayValue(it, loc[it]) })
-        // TODO: Load up correct keys
-        childCategoryNames.set(arrayOf("National", "Foreigner", "Refugee").map { DisplayValue(it, loc[it]) })
-        languages.set(configuration.personLanguages.map { language -> language.name }.map { DisplayValue(it, loc[it]) })
+        vaccineNames.set(configuration.vaccines.map { vaccine ->
+            DisplayValue(vaccine.name, loc[vaccine.name])
+        })
+        val categories = listOf("National", "Foreigner", "Refugee")
+        val childCategoryDisplayValue = categories.map { categories ->
+            DisplayValue(categories, loc[categories])
+        }
+        childCategoryNames.set(childCategoryDisplayValue)
+
+        languages.set(configuration.personLanguages.map { language ->
+            DisplayValue(language.name, loc[language.name]) })
     }
 
     private suspend fun ImageBytes.compress() = ImageHelper.compressRawImage(this, dispatchers.io)
@@ -224,7 +233,6 @@ class RegisterParticipantParticipantDetailsViewModel @Inject constructor(
         val nin = nin.get()
         logInfo("setting up birthweight")
         val birthWeight = birthWeight.get()
-        logInfo("setting up birthweight")
         val gender = gender.get()
         val birthDate = birthDate.get()
         val isBirthDateEstimated = isBirthDateEstimated.get()
