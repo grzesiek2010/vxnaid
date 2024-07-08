@@ -81,6 +81,8 @@ interface VaccineTrackerSyncApiDataSource : VaccineTrackerApiDataSourceBase {
 
     suspend fun getSubstancesGroupConfig(): SubstancesGroupConfig
 
+    suspend fun getIdentifiersList(identifierTypeName: String): List<IdentifierDTO>
+
     suspend fun getDeviceName(deviceNameRequest: DeviceNameRequest): DeviceNameResponse
 
     suspend fun getPersonImage(personUuid: String): ResponseBody?
@@ -237,8 +239,12 @@ class VaccineTrackerSyncApiDataSourceDefault @Inject constructor(
         apiService.getSubstancesConfig()
     }
 
-    override suspend fun getSubstancesGroupConfig(): SubstancesGroupConfig = webCallSync(callName = "getSubstancesGroupConfig"){
+    override suspend fun getSubstancesGroupConfig(): SubstancesGroupConfig = webCallSync(callName = "getSubstancesGroupConfig") {
         apiService.getSubstancesGroupConfig()
+    }
+
+    override suspend fun getIdentifiersList(identifierTypeName: String): List<IdentifierDTO> = webCallSync(callName = "getIdentifiersList") {
+        apiService.getParticipantIdentifiers(identifierTypeName)
     }
 
     override suspend fun getPersonImage(personUuid: String): ResponseBody? = webCallSync(callName = "getPersonImage") {
