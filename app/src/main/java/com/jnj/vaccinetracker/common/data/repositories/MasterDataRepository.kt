@@ -8,10 +8,12 @@ import com.jnj.vaccinetracker.common.data.models.api.response.LocalizationMapDto
 import com.jnj.vaccinetracker.common.domain.entities.Configuration
 import com.jnj.vaccinetracker.common.domain.entities.MasterDataFile
 import com.jnj.vaccinetracker.common.domain.entities.NinIdentifiersList
+import com.jnj.vaccinetracker.common.domain.entities.OtherSubstancesConfig
 import com.jnj.vaccinetracker.common.domain.entities.Sites
 import com.jnj.vaccinetracker.common.domain.entities.SubstancesConfig
 import com.jnj.vaccinetracker.common.domain.entities.SubstancesGroupConfig
 import com.jnj.vaccinetracker.common.domain.entities.ninIdentifiersListAdapter
+import com.jnj.vaccinetracker.common.domain.entities.otherSubstancesConfigAdapter
 import com.jnj.vaccinetracker.common.domain.entities.substancesConfigAdapter
 import com.jnj.vaccinetracker.common.domain.entities.substancesGroupConfigAdapter
 import com.jnj.vaccinetracker.common.helpers.AppCoroutineDispatchers
@@ -51,6 +53,7 @@ class MasterDataRepository @Inject constructor(
     private val substancesConfigAdapter = moshi.substancesConfigAdapter()
     private val substancesGroupConfigAdapter = moshi.substancesGroupConfigAdapter()
     private val identifiersListAdapter = moshi.ninIdentifiersListAdapter()
+    private val otherSubstancesConfigAdapter = moshi.otherSubstancesConfigAdapter()
 
     private val masterDataDir get() = File(filesDir, masterDataFolderName)
     private fun masterDataFile(fileName: String): File {
@@ -122,6 +125,10 @@ class MasterDataRepository @Inject constructor(
         writeFile(MasterDataFile.NIN_IDENTIFIERS_LIST, identifiersListAdapter.toJson(ninIdentifiersList))
     }
 
+    suspend fun writeOtherSubstancesConfig(otherSubstancesConfig: OtherSubstancesConfig) = withContext(dispatchers.io) {
+        writeFile(MasterDataFile.OTHER_SUBSTANCES_CONFIG, otherSubstancesConfigAdapter.toJson(otherSubstancesConfig))
+    }
+
     suspend fun writeAddressHierarchy(addressHierarchy: AddressHierarchyDto) = withContext(dispatchers.io) {
         writeFile(MasterDataFile.ADDRESS_HIERARCHY, addressHierarchyAdapter.toJson(addressHierarchy))
     }
@@ -175,6 +182,8 @@ class MasterDataRepository @Inject constructor(
     suspend fun readSubstancesGroupConfig(): SubstancesGroupConfig? = readFile(MasterDataFile.SUBSTANCES_GROUP_CONFIG, substancesGroupConfigAdapter)
 
     suspend fun readNinIdentifiersList(): NinIdentifiersList? = readFile(MasterDataFile.NIN_IDENTIFIERS_LIST, identifiersListAdapter)
+
+    suspend fun readOtherSubstancesConfig(): OtherSubstancesConfig? = readFile(MasterDataFile.OTHER_SUBSTANCES_CONFIG, otherSubstancesConfigAdapter)
 
     suspend fun md5Hash(masterDataFile: MasterDataFile): String? {
         return masterDataFile.readContentDecrypted()?.let { md5HashGenerator.md5(it) }

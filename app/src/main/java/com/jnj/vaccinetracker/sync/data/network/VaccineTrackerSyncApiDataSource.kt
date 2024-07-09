@@ -8,6 +8,7 @@ import com.jnj.vaccinetracker.common.data.network.VaccineTrackerApiDataSourceBas
 import com.jnj.vaccinetracker.common.data.repositories.CookieRepository
 import com.jnj.vaccinetracker.common.di.qualifiers.SyncApi
 import com.jnj.vaccinetracker.common.domain.entities.BiometricsTemplateBytes
+import com.jnj.vaccinetracker.common.domain.entities.OtherSubstancesConfig
 import com.jnj.vaccinetracker.common.domain.entities.SubstancesConfig
 import com.jnj.vaccinetracker.common.domain.entities.SubstancesGroupConfig
 import com.jnj.vaccinetracker.common.helpers.logInfo
@@ -80,6 +81,8 @@ interface VaccineTrackerSyncApiDataSource : VaccineTrackerApiDataSourceBase {
     suspend fun getSubstancesConfig(): SubstancesConfig
 
     suspend fun getSubstancesGroupConfig(): SubstancesGroupConfig
+
+    suspend fun getOtherSubstancesConfig(): OtherSubstancesConfig
 
     suspend fun getIdentifiersList(identifierTypeName: String): List<IdentifierDTO>
 
@@ -241,6 +244,10 @@ class VaccineTrackerSyncApiDataSourceDefault @Inject constructor(
 
     override suspend fun getSubstancesGroupConfig(): SubstancesGroupConfig = webCallSync(callName = "getSubstancesGroupConfig") {
         apiService.getSubstancesGroupConfig()
+    }
+
+    override suspend fun getOtherSubstancesConfig(): OtherSubstancesConfig = webCallSync(callName = "getOtherSubstancesConfig") {
+        apiService.getOtherSubstancesConfig()
     }
 
     override suspend fun getIdentifiersList(identifierTypeName: String): List<IdentifierDTO> = webCallSync(callName = "getIdentifiersList") {

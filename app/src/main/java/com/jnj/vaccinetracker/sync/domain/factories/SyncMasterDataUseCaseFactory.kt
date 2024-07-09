@@ -13,7 +13,8 @@ class SyncMasterDataUseCaseFactory @Inject constructor(
     private val syncVaccineScheduleUseCase: SyncVaccineScheduleUseCase,
     private val syncSubstancesConfigUseCase: SyncSubstancesConfigUseCase,
     private val syncSubstancesGroupConfigUseCase: SyncSubstancesGroupConfigUseCase,
-    private val syncNinIdentifiersListUseCase: SyncNinIdentifiersListUseCase
+    private val syncNinIdentifiersListUseCase: SyncNinIdentifiersListUseCase,
+    private val otherSubstancesConfigUseCase: SyncOtherSubstancesConfigUseCase
 ) {
 
     fun create(masterDataFile: MasterDataFile): SyncMasterDataUseCase {
@@ -26,6 +27,7 @@ class SyncMasterDataUseCaseFactory @Inject constructor(
             MasterDataFile.SUBSTANCES_CONFIG -> syncSubstancesConfigUseCase
             MasterDataFile.SUBSTANCES_GROUP_CONFIG -> syncSubstancesGroupConfigUseCase
             MasterDataFile.NIN_IDENTIFIERS_LIST -> syncNinIdentifiersListUseCase
+            MasterDataFile.OTHER_SUBSTANCES_CONFIG -> otherSubstancesConfigUseCase
         }
     }
 }

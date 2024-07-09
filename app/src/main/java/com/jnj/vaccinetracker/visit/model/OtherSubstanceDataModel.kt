@@ -1,7 +1,7 @@
 package com.jnj.vaccinetracker.visit.model
 
-data class SubstanceDataModel(
+data class OtherSubstanceDataModel(
     val conceptName: String,
     val category: String,
-    val routeOfAdministration: String
+    val options: List<String>
 )
