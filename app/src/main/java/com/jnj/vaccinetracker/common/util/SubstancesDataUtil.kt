@@ -95,7 +95,7 @@ class SubstancesDataUtil {
         }
 
         @RequiresApi(Build.VERSION_CODES.O)
-        private fun getWeeksBetweenDateAndToday(dateString: String): Int {
+        fun getWeeksBetweenDateAndToday(dateString: String): Int {
             val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val startDate = LocalDate.parse(dateString, formatter)
             val endDate = LocalDate.now()
