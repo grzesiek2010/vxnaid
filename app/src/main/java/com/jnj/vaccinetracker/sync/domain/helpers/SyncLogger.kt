@@ -100,6 +100,7 @@ class SyncLogger @Inject constructor(
             MasterDataFile.SUBSTANCES_CONFIG -> masterDataMemoryDataSource.observeSubstanceConfig().map { }
             MasterDataFile.SUBSTANCES_GROUP_CONFIG -> masterDataMemoryDataSource.observeSubstancesGroupConfig().map { }
             MasterDataFile.NIN_IDENTIFIERS_LIST -> masterDataMemoryDataSource.observeNinIdentifiersList().map { }
+            MasterDataFile.OTHER_SUBSTANCES_CONFIG -> masterDataMemoryDataSource.observeOtherSubstancesConfig().map { }
         }
     }
 

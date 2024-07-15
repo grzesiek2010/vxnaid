@@ -10,7 +10,6 @@ import com.jnj.vaccinetracker.common.data.managers.VisitManager
 import com.jnj.vaccinetracker.common.data.models.Constants
 import com.jnj.vaccinetracker.common.di.ResourcesWrapper
 import com.jnj.vaccinetracker.common.domain.entities.Manufacturer
-import com.jnj.vaccinetracker.common.domain.entities.ObservationValue
 import com.jnj.vaccinetracker.common.domain.entities.VisitDetail
 import com.jnj.vaccinetracker.common.exceptions.OperatorUuidNotAvailableException
 import com.jnj.vaccinetracker.common.helpers.*
@@ -21,7 +20,6 @@ import com.jnj.vaccinetracker.participantflow.model.ParticipantImageUiModel
 import com.jnj.vaccinetracker.participantflow.model.ParticipantImageUiModel.Companion.toUiModel
 import com.jnj.vaccinetracker.participantflow.model.ParticipantSummaryUiModel
 import com.jnj.vaccinetracker.sync.domain.entities.UpcomingVisit
-import com.jnj.vaccinetracker.visit.model.SubstanceDataModel
 import com.jnj.vaccinetracker.visit.zscore.HeightZScoreCalculator
 import com.jnj.vaccinetracker.visit.zscore.MuacZScoreCalculator
 import com.jnj.vaccinetracker.visit.zscore.NutritionZScoreCalculator
@@ -29,14 +27,8 @@ import com.jnj.vaccinetracker.visit.zscore.WeightZScoreCalculator
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.yield
-import java.time.Instant
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.time.temporal.ChronoUnit
 import java.util.*
 import javax.inject.Inject
-import kotlin.collections.ArrayList
-import kotlin.math.ceil
 
 /**
  * ViewModel for visit screen.
@@ -97,6 +89,7 @@ class VisitViewModel @Inject constructor(
     val zScoreMuacTextColor = MutableLiveData<Int>()
 
     private var manufacturersList: MutableList<Manufacturer> = mutableListOf<Manufacturer>()
+
     init {
         initState()
     }
@@ -130,8 +123,13 @@ class VisitViewModel @Inject constructor(
                 visits,
                 configurationManager
             )
+            val otherSubstancesData = SubstancesDataUtil.getOtherSubstancesDataForCurrentVisit(
+                participantSummary.birthDateText,
+                configurationManager
+            )
 
-            shouldValidateMuac.value = MuacZScoreCalculator.shouldCalculateMuacZScore(participantSummary.birthDateText)
+            shouldValidateMuac.value =
+                MuacZScoreCalculator.shouldCalculateMuacZScore(participantSummary.birthDateText)
             onVisitsLoaded(visits)
             //    onManufacturersLoaded(manufacturers)
             onManufacturerLoaded(config.manufacturers)
@@ -188,7 +186,8 @@ class VisitViewModel @Inject constructor(
 
         foundDosingVisit?.let { visit ->
             val now = Calendar.getInstance().timeInMillis
-            val insideTimeWindow = now in visit.startDate.dateDayStart.time..(visit.endDate.dateDayStart.time + 1.days)
+            val insideTimeWindow =
+                now in visit.startDate.dateDayStart.time..(visit.endDate.dateDayStart.time + 1.days)
             logInfo("insideTimeWindow: $insideTimeWindow")
             dosingVisitIsInsideTimeWindow.set(insideTimeWindow)
         }
@@ -229,7 +228,7 @@ class VisitViewModel @Inject constructor(
         }
     }
 
-    fun getManufactuerList():kotlin.collections.List<Manufacturer>{
+    fun getManufactuerList(): kotlin.collections.List<Manufacturer> {
         return manufacturersList
     }
 
@@ -354,7 +353,11 @@ class VisitViewModel @Inject constructor(
             return
         }
 
-        if (!overrideManufacturerCheck && !isExpectedManufacturer(dosingVisit.dosingNumber, manufacturer)) {
+        if (!overrideManufacturerCheck && !isExpectedManufacturer(
+                dosingVisit.dosingNumber,
+                manufacturer
+            )
+        ) {
             incorrectManufacturerListener()
             return
         }
@@ -390,7 +393,7 @@ class VisitViewModel @Inject constructor(
                     weight = weight!!,
                     height = height!!,
                     isOedema = isOedema!!,
-                    muac=muac
+                    muac = muac
                 )
                 onVisitLogged()
                 loading.set(false)
@@ -496,6 +499,7 @@ class VisitViewModel @Inject constructor(
         heightValidationMessage.set(null)
         setNutritionZScore()
     }
+
     fun setIsOedema(value: Boolean) {
         if (value == isOedema.value) return
         isOedema.value = value

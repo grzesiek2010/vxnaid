@@ -4,6 +4,7 @@ import com.jnj.vaccinetracker.common.domain.entities.AddressHierarchy
 import com.jnj.vaccinetracker.common.domain.entities.Configuration
 import com.jnj.vaccinetracker.common.domain.entities.LocalizationMap
 import com.jnj.vaccinetracker.common.domain.entities.NinIdentifiersList
+import com.jnj.vaccinetracker.common.domain.entities.OtherSubstancesConfig
 import com.jnj.vaccinetracker.common.domain.entities.Sites
 import com.jnj.vaccinetracker.common.domain.entities.SubstancesConfig
 import com.jnj.vaccinetracker.common.domain.entities.SubstancesGroupConfig
@@ -29,6 +30,7 @@ class MasterDataMemoryDataSource @Inject constructor() {
     private val substancesConfigFlow = MutableStateFlow<Container<SubstancesConfig?>>(Container(null))
     private val substancesGroupConfigFlow = MutableStateFlow<Container<SubstancesGroupConfig?>>(Container(null))
     private val ninIdentifiersListFlow = MutableStateFlow<Container<NinIdentifiersList?>>(Container(null))
+    private val otherSubstancesConfigFlow = MutableStateFlow<Container<OtherSubstancesConfig?>>(Container(null))
 
     fun setSites(sites: Sites?) {
         sitesFlow.value = Container(sites)
@@ -102,4 +104,12 @@ class MasterDataMemoryDataSource @Inject constructor() {
     fun getNinIdentifiersList(): NinIdentifiersList? = ninIdentifiersListFlow.value.obj
 
     fun observeNinIdentifiersList(): Flow<NinIdentifiersList?> = ninIdentifiersListFlow.map { it.obj }
+
+    fun setOtherSubstancesConfig(otherSubstancesConfig: OtherSubstancesConfig?) {
+        otherSubstancesConfigFlow.value = Container(otherSubstancesConfig)
+    }
+
+    fun getOtherSubstancesConfig(): OtherSubstancesConfig? = otherSubstancesConfigFlow.value.obj
+
+    fun observeOtherSubstancesConfig(): Flow<OtherSubstancesConfig?> = otherSubstancesConfigFlow.map { it.obj }
 }

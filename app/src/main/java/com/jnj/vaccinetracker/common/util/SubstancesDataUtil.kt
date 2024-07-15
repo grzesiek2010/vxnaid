@@ -6,6 +6,7 @@ import com.jnj.vaccinetracker.common.data.managers.ConfigurationManager
 import com.jnj.vaccinetracker.common.domain.entities.Substance
 import com.jnj.vaccinetracker.common.domain.entities.SubstancesGroupConfig
 import com.jnj.vaccinetracker.common.domain.entities.VisitDetail
+import com.jnj.vaccinetracker.visit.model.OtherSubstanceDataModel
 import com.jnj.vaccinetracker.visit.model.SubstanceDataModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -39,7 +40,34 @@ class SubstancesDataUtil {
                 }
             }
 
-            return substanceDataModelList;
+            return substanceDataModelList
+        }
+
+        @RequiresApi(Build.VERSION_CODES.O)
+        suspend fun getOtherSubstancesDataForCurrentVisit(
+            participantBirthDate: String,
+            configurationManager: ConfigurationManager
+        ): List<OtherSubstanceDataModel> {
+            val otherSubstancesConfig = configurationManager.getOtherSubstancesConfig()
+            val childAgeInWeeks = getWeeksBetweenDateAndToday(participantBirthDate)
+            val otherSubstancesDataModelList = mutableListOf<OtherSubstanceDataModel>()
+            otherSubstancesConfig.forEach { otherSubstance ->
+                val minWeekNumber =
+                    otherSubstance.weeksAfterBirth - otherSubstance.weeksAfterBirthLowWindow
+                val maxWeekNumber =
+                    otherSubstance.weeksAfterBirth + otherSubstance.weeksAfterBirthUpWindow
+                if (childAgeInWeeks in minWeekNumber..maxWeekNumber) {
+                    otherSubstancesDataModelList.add(
+                        OtherSubstanceDataModel(
+                            otherSubstance.conceptName,
+                            otherSubstance.category,
+                            otherSubstance.options
+                        )
+                    )
+                }
+            }
+
+            return otherSubstancesDataModelList
         }
 
         private fun getSingleSubstanceData(

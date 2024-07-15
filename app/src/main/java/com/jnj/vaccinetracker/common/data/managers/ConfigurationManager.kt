@@ -1,6 +1,5 @@
 package com.jnj.vaccinetracker.common.data.managers
 
-import android.hardware.SensorPrivacyManager
 import com.jnj.vaccinetracker.common.data.helpers.SystemLanguageProvider
 import com.jnj.vaccinetracker.common.domain.entities.AddressHierarchy
 import com.jnj.vaccinetracker.common.domain.entities.AddressValue
@@ -10,12 +9,12 @@ import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetAddressHierar
 import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetConfigurationUseCase
 import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetLocalizationMapUseCase
 import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetNinIdentifiersListUseCase
+import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetOtherSubstancesConfigUseCase
 import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetSitesUseCase
 import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetSubstancesConfigUseCase
 import com.jnj.vaccinetracker.common.domain.usecases.masterdata.GetSubstancesGroupConfigUseCase
 import com.jnj.vaccinetracker.common.exceptions.SiteNotFoundException
 import com.jnj.vaccinetracker.common.ui.model.SiteUiModel
-import com.jnj.vaccinetracker.sync.domain.usecases.masterdata.SyncSubstancesConfigUseCase
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -32,7 +31,8 @@ class ConfigurationManager @Inject constructor(
     private val systemLanguageProvider: SystemLanguageProvider,
     private val getSubstancesConfigUseCase: GetSubstancesConfigUseCase,
     private val getSubstancesGroupConfigUseCase: GetSubstancesGroupConfigUseCase,
-    private val getNinIdentifiersListUseCase: GetNinIdentifiersListUseCase
+    private val getNinIdentifiersListUseCase: GetNinIdentifiersListUseCase,
+    private val getOtherSubstancesConfigUseCase: GetOtherSubstancesConfigUseCase
 ) {
 
     suspend fun getConfiguration() = getConfigurationUseCase.getMasterData()
@@ -70,4 +70,6 @@ class ConfigurationManager @Inject constructor(
     suspend fun getSubstancesGroupConfig() = getSubstancesGroupConfigUseCase.getMasterData()
 
     suspend fun getNinIdentifiers() = getNinIdentifiersListUseCase.getMasterData()
+
+    suspend fun getOtherSubstancesConfig() = getOtherSubstancesConfigUseCase.getMasterData()
 }
